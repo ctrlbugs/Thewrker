@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   authors: [{ name: BRAND.name }],
   creator: BRAND.name,
   icons: {
-    icon: [{ url: BRAND.logoIcon, type: "image/svg+xml" }],
-    shortcut: [{ url: BRAND.logoIcon, type: "image/svg+xml" }],
-    apple: [{ url: BRAND.logoIcon, type: "image/svg+xml" }],
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
     type: "website",
@@ -36,12 +36,20 @@ export const metadata: Metadata = {
     siteName: BRAND.name,
     title: `${BRAND.name} — ${BRAND.tagline}`,
     description: BRAND.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${BRAND.name} — ${BRAND.tagline}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${BRAND.name} — ${BRAND.tagline}`,
     description: BRAND.description,
-    creator: `@${BRAND.name}`,
+    images: ["/twitter-image"],
   },
   robots: {
     index: true,

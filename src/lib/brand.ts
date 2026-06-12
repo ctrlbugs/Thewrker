@@ -10,4 +10,5 @@ export const BRAND = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://thewrker.com",
   logo: "/logo.svg",
   logoIcon: "/logo-icon.svg",
+  logoLight: "/logo-light.svg",
 } as const;

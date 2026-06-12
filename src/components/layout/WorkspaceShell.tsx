@@ -9,6 +9,7 @@ import {
   getNavForPath,
   isNavItemActive,
 } from "@/lib/navigation";
+import BrandIcon from "@/components/brand/BrandIcon";
 import { BRAND } from "@/lib/brand";
 import { USER_PROFILE } from "@/lib/constants";
 
@@ -92,14 +93,7 @@ export function SidebarUser({ variant = "default" }: { variant?: "default" | "de
       <div
         className={`pd-sidebar-user-card ${isDesktop ? "pd-sidebar-user-card--desktop" : ""}`}
       >
-        <Image
-          src={USER_PROFILE.avatar}
-          alt=""
-          width={40}
-          height={40}
-          className="h-10 w-10 shrink-0 rounded-full object-cover ring-2 ring-accent-light bg-white p-1"
-          aria-hidden
-        />
+        <BrandIcon size={40} className="h-10 w-10 shrink-0" />
         <div className="min-w-0">
           <p className="body-emphasized-14pt truncate">{USER_PROFILE.name}</p>
           <p className="body-secondary-info-14pt truncate">{USER_PROFILE.role}</p>
