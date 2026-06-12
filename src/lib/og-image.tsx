@@ -11,7 +11,7 @@ function siteOrigin(): string {
 }
 
 export function buildOgImage() {
-  const logoUrl = `${siteOrigin()}/logo-light.svg`;
+  const logoUrl = `${siteOrigin()}${BRAND.logoIcon}`;
 
   return new ImageResponse(
     (
@@ -25,7 +25,7 @@ export function buildOgImage() {
           background: "#000000",
         }}
       >
-        <img src={logoUrl} width={640} height={146} alt="" />
+        <img src={logoUrl} width={280} height={280} alt="" />
       </div>
     ),
     { ...ogImageSize },

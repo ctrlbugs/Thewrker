@@ -6,7 +6,7 @@ export type WorkMode = "remote" | "hybrid" | "onsite";
 
 export type EmploymentType = "full-time" | "part-time" | "contract" | "internship";
 
-export type ResumeTemplateId = "executive" | "modern" | "tech" | "creative";
+export type ResumeTemplateId = "classic" | "executive" | "modern" | "tech" | "creative";
 
 export type IndustryNiche =
   | "technology"
@@ -166,6 +166,7 @@ export const EMPLOYMENT_TYPES: { id: EmploymentType; label: string }[] = [
 ];
 
 export const RESUME_TEMPLATES: { id: ResumeTemplateId; label: string; description: string }[] = [
+  { id: "classic", label: "Classic", description: "Traditional serif layout with section rules" },
   { id: "executive", label: "Executive", description: "Two-column profile with leadership focus" },
   { id: "modern", label: "Modern", description: "Clean single-column ATS layout" },
   { id: "tech", label: "Tech", description: "Projects, skills, and certifications first" },

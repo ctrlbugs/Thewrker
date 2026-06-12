@@ -13,7 +13,7 @@ const DEFAULT_PROFILE: CareerProfile = {
   yearsExperience: 1,
   careerDNA: null,
   structuredResume: null,
-  resumeTemplate: "executive",
+  resumeTemplate: "classic",
 };
 
 export const DEFAULT_CAREEROS_STATE: CareerOSState = {
@@ -36,7 +36,7 @@ function migrateProfile(raw: Partial<CareerProfile>): CareerProfile {
         }
       : null,
     structuredResume: raw.structuredResume ?? null,
-    resumeTemplate: raw.resumeTemplate ?? "executive",
+    resumeTemplate: raw.resumeTemplate ?? "classic",
   };
 }
 

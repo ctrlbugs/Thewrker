@@ -1,17 +1,24 @@
 "use client";
 
+import { forwardRef } from "react";
+
 import type { StructuredResume } from "@/lib/careeros/types";
+
+import ClassicResumeLayout from "./ClassicResumeLayout";
 
 interface ResumePreviewProps {
   resume: StructuredResume;
 }
 
-export default function ResumePreview({ resume }: ResumePreviewProps) {
+const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(function ResumePreview(
+  { resume },
+  ref,
+) {
   const isExecutive = resume.templateId === "executive";
 
   if (isExecutive) {
     return (
-      <div className="pd-careeros-resume-preview pd-careeros-resume-preview--executive">
+      <div ref={ref} className="pd-careeros-resume-preview pd-careeros-resume-preview--executive">
         <aside className="pd-careeros-resume-sidebar">
           <h2 className="pd-careeros-resume-name">{resume.name}</h2>
           <p className="pd-careeros-resume-headline">{resume.headline}</p>
@@ -87,49 +94,10 @@ export default function ResumePreview({ resume }: ResumePreviewProps) {
   }
 
   return (
-    <div className="pd-careeros-resume-preview pd-careeros-resume-preview--modern">
-      <header className="mb-6 border-b border-slate-200 pb-4">
-        <h2 className="pd-careeros-resume-name text-slate-900">{resume.name}</h2>
-        <p className="pd-careeros-resume-headline text-slate-600">{resume.headline}</p>
-        <p className="mt-2 text-sm text-slate-500">
-          {[resume.contact.email, resume.contact.phone, resume.contact.location]
-            .filter(Boolean)
-            .join(" · ")}
-        </p>
-      </header>
-
-      {resume.summary && (
-        <section className="mb-5">
-          <h3 className="pd-careeros-resume-section-title text-slate-900">Summary</h3>
-          <p className="text-sm leading-relaxed text-slate-700">{resume.summary}</p>
-        </section>
-      )}
-
-      {resume.skills.length > 0 && (
-        <section className="mb-5">
-          <h3 className="pd-careeros-resume-section-title text-slate-900">Skills</h3>
-          <p className="text-sm text-slate-700">{resume.skills.join(" · ")}</p>
-        </section>
-      )}
-
-      {resume.experience.length > 0 && (
-        <section className="mb-5">
-          <h3 className="pd-careeros-resume-section-title text-slate-900">Experience</h3>
-          {resume.experience.map((exp, i) => (
-            <div key={`${exp.company}-${i}`} className="mb-4">
-              <p className="font-semibold text-slate-900">
-                {exp.role} — {exp.company}
-              </p>
-              <p className="text-xs text-slate-500">{exp.period}</p>
-              <ul className="mt-1 list-disc pl-5 text-sm text-slate-700">
-                {exp.bullets.map((b) => (
-                  <li key={b}>{b}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
-      )}
+    <div ref={ref} className="pd-careeros-resume-preview pd-careeros-resume-preview--classic">
+      <ClassicResumeLayout resume={resume} />
     </div>
   );
-}
+});
+
+export default ResumePreview;

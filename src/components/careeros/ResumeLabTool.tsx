@@ -18,7 +18,15 @@ import { analyzeAts, extractSkills } from "@/lib/careeros/analysis";
 
 import type { AtsReport } from "@/lib/careeros/analysis";
 
-import { parseResumeToStructured, structuredResumeToText, upgradeResumeToStandard } from "@/lib/careeros/resume-template";
+import {
+  buildClassicStyledResumePdf,
+  buildResumeDocx,
+  buildResumePdf,
+  getResumePlainText,
+  resumeFileName,
+} from "@/lib/careeros/resume-export";
+import { parseResumeToStructured, upgradeResumeToStandard } from "@/lib/careeros/resume-template";
+import { downloadBlob } from "@/lib/tools/archive";
 
 import { CAREER_LEVELS, RESUME_TEMPLATES } from "@/lib/careeros/types";
 
@@ -62,9 +70,17 @@ export default function ResumeLabTool() {
 
 
 
-  const structured =
+  const previewTemplateId: ResumeTemplateId =
 
-    profile.structuredResume ?? parseResumeToStructured(profile, profile.resumeTemplate);
+    profile.resumeTemplate === "executive" ? "executive" : "classic";
+
+  const structured = {
+
+    ...parseResumeToStructured(profile, profile.resumeTemplate),
+
+    templateId: previewTemplateId,
+
+  };
 
 
 
@@ -318,25 +334,78 @@ export default function ResumeLabTool() {
 
 
 
-  const exportText = () => {
+  type ResumeExportStyle = "classic" | "preview";
 
-    const text = structuredResumeToText(structured);
+  const downloadPreviewPdf = async () => {
 
-    const blob = new Blob([text], { type: "text/plain" });
+    await downloadResume("pdf", undefined, "preview");
 
-    const url = URL.createObjectURL(blob);
+  };
 
-    const a = document.createElement("a");
 
-    a.href = url;
 
-    a.download = `${profile.name || "resume"}-careeros.txt`;
+  const getExportResume = (textOverride?: string, style: ResumeExportStyle = "preview") => {
 
-    a.click();
+    const parsed = textOverride?.trim()
+      ? parseResumeToStructured({ ...profile, resumeText: textOverride }, profile.resumeTemplate)
+      : { ...structured };
 
-    URL.revokeObjectURL(url);
+    const templateId = style === "classic" ? "classic" : previewTemplateId;
 
-    setMessage("Resume exported.");
+    return { ...parsed, templateId };
+
+  };
+
+
+
+  const downloadResume = async (
+    format: "pdf" | "docx",
+    textOverride?: string,
+    style: ResumeExportStyle = "preview",
+  ) => {
+
+    const exportResume = getExportResume(textOverride, style);
+
+    const hasContent =
+
+      exportResume.summary ||
+
+      exportResume.experience.length > 0 ||
+
+      getResumePlainText(exportResume, textOverride ?? profile.resumeText);
+
+    if (!hasContent) {
+
+      setMessage("Add resume content before downloading.");
+
+      return;
+
+    }
+
+    const label = format === "pdf" ? "PDF" : "DOCX";
+
+    await task.run(`Preparing ${label}...`, async (update) => {
+
+      update(50, "Formatting your resume...");
+
+      const blob =
+        format === "pdf"
+          ? style === "classic"
+            ? await buildClassicStyledResumePdf(exportResume)
+            : await buildResumePdf(exportResume)
+          : await buildResumeDocx(exportResume);
+
+      downloadBlob(blob, resumeFileName(profile.name, format));
+
+      setMessage(
+        style === "classic"
+          ? `${label} downloaded (classic template).`
+          : `${label} downloaded.`,
+      );
+
+      update(100, "Done.");
+
+    });
 
   };
 
@@ -608,11 +677,37 @@ export default function ResumeLabTool() {
 
         {profile.resumeText && (
 
-          <ActionButton variant="secondary" onClick={exportText}>
+          <>
 
-            Export
+            <ActionButton
 
-          </ActionButton>
+              loading={task.active}
+
+              variant="secondary"
+
+              onClick={() => downloadResume("pdf", undefined, "classic")}
+
+            >
+
+              Download PDF
+
+            </ActionButton>
+
+            <ActionButton
+
+              loading={task.active}
+
+              variant="secondary"
+
+              onClick={() => downloadResume("docx", undefined, "classic")}
+
+            >
+
+              Download DOCX
+
+            </ActionButton>
+
+          </>
 
         )}
 
@@ -716,19 +811,75 @@ export default function ResumeLabTool() {
 
             <p className="body-emphasized-14pt">Live preview</p>
 
-            <button
+            <div className="pd-careeros-preview-toolbar">
 
-              type="button"
+              {showPreview && (
 
-              className="pd-careeros-text-btn"
+                <button
 
-              onClick={() => setShowPreview((v) => !v)}
+                  type="button"
 
-            >
+                  className="pd-careeros-preview-download"
 
-              {showPreview ? "Hide" : "Show"} preview
+                  aria-label="Download resume as PDF"
 
-            </button>
+                  title="Download PDF"
+
+                  disabled={task.active}
+
+                  onClick={downloadPreviewPdf}
+
+                >
+
+                  <svg
+
+                    width="18"
+
+                    height="18"
+
+                    viewBox="0 0 24 24"
+
+                    fill="none"
+
+                    stroke="currentColor"
+
+                    strokeWidth="2"
+
+                    strokeLinecap="round"
+
+                    strokeLinejoin="round"
+
+                    aria-hidden
+
+                  >
+
+                    <path d="M12 3v12" />
+
+                    <path d="m7 11 5 5 5-5" />
+
+                    <path d="M5 21h14" />
+
+                  </svg>
+
+                </button>
+
+              )}
+
+              <button
+
+                type="button"
+
+                className="pd-careeros-text-btn"
+
+                onClick={() => setShowPreview((v) => !v)}
+
+              >
+
+                {showPreview ? "Hide" : "Show"} preview
+
+              </button>
+
+            </div>
 
           </div>
 
@@ -834,23 +985,55 @@ export default function ResumeLabTool() {
 
           </label>
 
-          <ActionButton
+          <div className="flex flex-wrap gap-3">
 
-            variant="secondary"
+            <ActionButton
 
-            onClick={() => {
+              loading={task.active}
 
-              updateProfile({ resumeText: tailoredResume });
+              variant="secondary"
 
-              setMessage("Tailored resume applied to your profile.");
+              onClick={() => downloadResume("pdf", tailoredResume, "classic")}
 
-            }}
+            >
 
-          >
+              Download PDF
 
-            Apply to profile
+            </ActionButton>
 
-          </ActionButton>
+            <ActionButton
+
+              loading={task.active}
+
+              variant="secondary"
+
+              onClick={() => downloadResume("docx", tailoredResume, "classic")}
+
+            >
+
+              Download DOCX
+
+            </ActionButton>
+
+            <ActionButton
+
+              variant="secondary"
+
+              onClick={() => {
+
+                updateProfile({ resumeText: tailoredResume });
+
+                setMessage("Tailored resume applied to your profile.");
+
+              }}
+
+            >
+
+              Apply to profile
+
+            </ActionButton>
+
+          </div>
 
         </div>
 
