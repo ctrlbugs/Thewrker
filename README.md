@@ -151,6 +151,51 @@ npm start
 
 ---
 
+## Deploy on Vercel
+
+The project is configured for [Vercel](https://vercel.com) (Next.js native).
+
+### Option A — Git deploy (recommended)
+
+1. Push to `main` on [github.com/ctrlbugs/Thewrker](https://github.com/ctrlbugs/Thewrker)
+2. Vercel auto-builds on every push (GitHub integration is connected)
+3. Dashboard: [vercel.com/ctrlbugs-projects/thewrker](https://vercel.com/ctrlbugs-projects/thewrker)
+
+### Option B — Vercel CLI
+
+```bash
+npm i -g vercel
+vercel login
+vercel link          # already linked locally as "thewrker"
+vercel --prod        # production deploy
+```
+
+### Environment variables (Vercel Dashboard)
+
+Go to **Project → Settings → Environment Variables** and add:
+
+| Variable | Environments |
+|----------|----------------|
+| `NEXT_PUBLIC_SITE_URL` | Production: `https://thewrker.vercel.app` (or your custom domain) |
+| `OPENAI_API_KEY` | Production, Preview, Development |
+| `OPENAI_MODEL` | `gpt-4o-mini` |
+| `SERPAPI_API_KEY` | Production, Preview, Development |
+| `OCR_SPACE_API_KEY` | Production, Preview, Development |
+| `REMOVE_BG_API_KEY` | Production, Preview, Development |
+| `GOOGLE_CSE_API_KEY` | Production, Preview, Development |
+| `GOOGLE_CSE_CX` | Production, Preview, Development |
+
+After adding variables, **redeploy** (Deployments → ⋯ → Redeploy).
+
+### Custom domain
+
+1. Vercel → Project → **Settings → Domains**
+2. Add `thewrker.com` (or your domain)
+3. Update DNS per Vercel instructions
+4. Set `NEXT_PUBLIC_SITE_URL` to `https://thewrker.com`
+
+---
+
 ## Scripts
 
 | Command | Description |
