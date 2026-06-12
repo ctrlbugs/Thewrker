@@ -16,7 +16,6 @@ export function testRegex(
   }
 
   try {
-    const regex = new RegExp(pattern, flags);
     const globalRegex = new RegExp(
       pattern,
       flags.includes("g") ? flags : `${flags}g`,
