@@ -1,0 +1,629 @@
+/* Soft Velonic-style cards — white surfaces, pastel badges, airy spacing */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+.workspace-overview-root {
+  --color-page-bg: #eaf1f3;
+  --color-ink: #3b4758;
+  --color-muted: #8a97ab;
+  --color-line: #eef1f4;
+  --color-surface: #ffffff;
+  --color-panel: #fafbfc;
+  --color-teal: #76bec5;
+  --color-teal-soft: #e7f6f7;
+  --font-manrope: "Manrope", sans-serif;
+  font-family: var(--font-manrope);
+  color: var(--color-ink);
+  transition: color 0.28s ease;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root,
+html[data-ds-theme="dark"] .workspace-overview-root {
+  --color-page-bg: #0f1419;
+  --color-ink: #e8eef6;
+  --color-muted: #8a97ab;
+  --color-line: rgba(232, 238, 246, 0.08);
+  --color-surface: #171d25;
+  --color-panel: #121820;
+  --color-teal-soft: rgba(118, 190, 197, 0.14);
+}
+
+/* Shared soft card shell (Chat / Projects feel) */
+.workspace-overview-root .ws-soft-card {
+  background: var(--color-surface);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(27, 23, 30, 0.08);
+  border: 0;
+  overflow: hidden;
+  transition: background-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.workspace-overview-root .ws-soft-panel-body {
+  background: var(--color-panel);
+  transition: background-color 0.28s ease;
+}
+
+/* Velonic stat widgets — soft, calm color blocks */
+.workspace-overview-root .ws-stat-velonic {
+  --stat-ink: #fff;
+  --stat-muted: rgba(255, 255, 255, 0.78);
+  --stat-chip: rgba(255, 255, 255, 0.16);
+  --stat-aside: rgba(255, 255, 255, 0.1);
+  --stat-ring: rgba(255, 255, 255, 0.55);
+  --stat-glow: transparent;
+  display: flex;
+  min-height: 7.25rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  color: var(--stat-ink);
+  box-shadow:
+    0 1px 2px rgba(33, 56, 107, 0.04),
+    0 10px 28px var(--stat-glow);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.28s ease;
+}
+
+.workspace-overview-root .ws-stat-velonic:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 2px 4px rgba(33, 56, 107, 0.05),
+    0 16px 36px var(--stat-glow);
+  filter: saturate(1.04) brightness(1.02);
+}
+
+.workspace-overview-root .ws-stat-velonic-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.2rem 1.2rem 1.2rem 1.3rem;
+  min-width: 0;
+}
+
+.workspace-overview-root .ws-stat-velonic-title {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stat-muted);
+}
+
+.workspace-overview-root .ws-stat-velonic-value {
+  margin: 0.5rem 0 0.7rem;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--stat-ink);
+}
+
+.workspace-overview-root .ws-stat-velonic-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  border-radius: 999px;
+  padding: 0.24rem 0.65rem;
+  background: var(--stat-chip);
+  backdrop-filter: blur(6px);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--stat-ink);
+  letter-spacing: 0.01em;
+}
+
+.workspace-overview-root .ws-stat-velonic-aside {
+  display: flex;
+  width: 4.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  background: var(--stat-aside);
+}
+
+.workspace-overview-root .ws-stat-velonic-icon {
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1.5px solid var(--stat-ring);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--stat-ink);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workspace-overview-root .ws-stat-velonic:hover .ws-stat-velonic-icon {
+  transform: scale(1.04);
+}
+
+.workspace-overview-root .ws-stat-velonic--teal {
+  --stat-glow: rgba(74, 156, 164, 0.22);
+  background: linear-gradient(145deg, #6db8bf 0%, #4a9ca4 100%);
+}
+
+.workspace-overview-root .ws-stat-velonic--gold {
+  --stat-glow: rgba(196, 156, 74, 0.22);
+  background: linear-gradient(145deg, #d4b56a 0%, #c49c4a 100%);
+}
+
+.workspace-overview-root .ws-stat-velonic--blue {
+  --stat-glow: rgba(82, 122, 186, 0.22);
+  background: linear-gradient(145deg, #6a8fc8 0%, #527aba 100%);
+}
+
+.workspace-overview-root .ws-stat-velonic--purple {
+  --stat-glow: rgba(122, 124, 176, 0.22);
+  background: linear-gradient(145deg, #8f91c0 0%, #7a7cb0 100%);
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-stat-velonic--teal,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-stat-velonic--teal {
+  background: linear-gradient(145deg, #3f8a92 0%, #2f6f76 100%);
+  --stat-glow: rgba(118, 190, 197, 0.18);
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-stat-velonic--gold,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-stat-velonic--gold {
+  background: linear-gradient(145deg, #a88a3e 0%, #8f7332 100%);
+  --stat-glow: rgba(212, 181, 106, 0.16);
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-stat-velonic--blue,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-stat-velonic--blue {
+  background: linear-gradient(145deg, #4a6fa8 0%, #3a5a8c 100%);
+  --stat-glow: rgba(106, 143, 200, 0.16);
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-stat-velonic--purple,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-stat-velonic--purple {
+  background: linear-gradient(145deg, #6a6c9a 0%, #565888 100%);
+  --stat-glow: rgba(143, 145, 192, 0.16);
+}
+
+.workspace-overview-root .ws-soft-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.15rem 0.85rem;
+}
+
+.workspace-overview-root .ws-soft-card-head--panel {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--color-line);
+  padding: 1.1rem 1.25rem;
+}
+
+.workspace-overview-root .ws-soft-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+
+.workspace-overview-root .ws-soft-card-sub {
+  margin: 0.3rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+/* Soft pastel status badges (Released / pending / WIP style) */
+.workspace-overview-root .ws-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.workspace-overview-root .ws-badge--teal,
+.workspace-overview-root .ws-badge--info {
+  background: var(--color-teal-soft);
+  color: #2f7f88;
+}
+
+.workspace-overview-root .ws-badge--rose {
+  background: #fde8ee;
+  color: #c45b7a;
+}
+
+.workspace-overview-root .ws-badge--purple {
+  background: #eee8ff;
+  color: #7b6ccf;
+}
+
+.workspace-overview-root .ws-badge--warn {
+  background: #fff1e4;
+  color: #d4894a;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-badge--teal,
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-badge--info,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-badge--teal,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-badge--info {
+  color: #9ed8de;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-badge--rose,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-badge--rose {
+  background: rgba(196, 91, 122, 0.18);
+  color: #f0b0c2;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-badge--purple,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-badge--purple {
+  background: rgba(123, 108, 207, 0.2);
+  color: #c4bbf0;
+}
+
+/* Soft icon plates */
+.workspace-overview-root .ws-soft-icon {
+  display: inline-flex;
+  height: 42px;
+  width: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.workspace-overview-root .ws-soft-icon--navy {
+  background: #e8eef8;
+  color: #21386b;
+}
+
+.workspace-overview-root .ws-soft-icon--teal {
+  background: var(--color-teal-soft);
+  color: #2f7f88;
+}
+
+.workspace-overview-root .ws-soft-icon--purple {
+  background: #eee8ff;
+  color: #7b6ccf;
+}
+
+.workspace-overview-root .ws-soft-icon--rose {
+  background: #fde8ee;
+  color: #c45b7a;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-soft-icon--navy,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-soft-icon--navy {
+  background: rgba(118, 190, 197, 0.12);
+  color: #9eb6e0;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-soft-icon--teal,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-soft-icon--teal {
+  color: #9ed8de;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-soft-icon--purple,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-soft-icon--purple {
+  background: rgba(123, 108, 207, 0.2);
+  color: #c4bbf0;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .ws-soft-icon--rose,
+html[data-ds-theme="dark"] .workspace-overview-root .ws-soft-icon--rose {
+  background: rgba(196, 91, 122, 0.18);
+  color: #f0b0c2;
+}
+
+/* Stat widgets */
+.workspace-overview-root .ws-stat-soft {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.workspace-overview-root .ws-stat-soft:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(27, 23, 30, 0.08);
+}
+
+.workspace-overview-root .ws-stat-soft-body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 1.15rem 1.15rem;
+}
+
+.workspace-overview-root .ws-stat-soft-value {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+.workspace-overview-root .ws-stat-soft-hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+/* Quick-start inner tiles */
+.workspace-overview-root .ws-soft-tile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 9.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  padding: 1.15rem 1.2rem;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.workspace-overview-root .ws-soft-tile-desc {
+  margin: 0.375rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #8a97ab;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.workspace-overview-root .ws-soft-tile:hover {
+  background: var(--color-surface);
+  border-color: #d9eef0;
+  box-shadow: 0 8px 22px rgba(27, 23, 30, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Studio cards */
+.workspace-overview-root .ws-studio-soft {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.workspace-overview-root .ws-studio-soft:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(27, 23, 30, 0.09);
+}
+
+.workspace-overview-root .ws-studio-soft-icon {
+  display: flex;
+  height: 48px;
+  width: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: var(--studio-soft, #e7f6f7);
+}
+
+.workspace-overview-root .ws-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--color-panel);
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid var(--color-line);
+}
+
+.workspace-overview-root .ws-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--studio-strong, var(--color-teal));
+  opacity: 0.85;
+}
+
+/* Dev tool cards */
+.workspace-overview-root .ws-tool-soft {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.workspace-overview-root .ws-tool-soft:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(27, 23, 30, 0.08);
+}
+
+.workspace-overview-root .ws-tool-soft-icon {
+  display: flex;
+  height: 46px;
+  width: 46px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: var(--tool-soft, #eef3f6);
+}
+
+/* Overview hero — clean, fresh brand card */
+.workspace-overview-root .ws-overview-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 28px;
+  border: 1px solid rgba(33, 56, 107, 0.06);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 252, 253, 0.96) 48%, rgba(232, 245, 247, 0.9) 100%);
+  box-shadow:
+    0 1px 2px rgba(33, 56, 107, 0.04),
+    0 18px 40px rgba(33, 56, 107, 0.06);
+  padding: 1.35rem 1.35rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .workspace-overview-root .ws-overview-hero {
+    padding: 1.75rem 2.25rem 1.85rem;
+  }
+}
+
+.workspace-overview-root .ws-overview-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 44rem;
+}
+
+.workspace-overview-root .ws-overview-hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 80% at 0% 0%, rgba(118, 190, 197, 0.18), transparent 55%),
+    radial-gradient(ellipse 45% 60% at 100% 20%, rgba(33, 56, 107, 0.08), transparent 50%);
+  pointer-events: none;
+}
+
+.workspace-overview-root .ws-overview-hero-orb {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.workspace-overview-root .ws-overview-hero-orb--a {
+  right: -2rem;
+  top: -3rem;
+  width: 14rem;
+  height: 14rem;
+  background: radial-gradient(circle, rgba(118, 190, 197, 0.35), rgba(118, 190, 197, 0));
+  animation: ws-hero-float 8s ease-in-out infinite;
+}
+
+.workspace-overview-root .ws-overview-hero-orb--b {
+  right: 18%;
+  bottom: -4rem;
+  width: 10rem;
+  height: 10rem;
+  background: radial-gradient(circle, rgba(33, 56, 107, 0.12), rgba(33, 56, 107, 0));
+  animation: ws-hero-float 10s ease-in-out infinite reverse;
+}
+
+.workspace-overview-root .ws-overview-hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(33, 56, 107, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(33, 56, 107, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(120deg, black 20%, transparent 75%);
+}
+
+@keyframes ws-hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.workspace-overview-root .ws-overview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  background: rgba(216, 252, 247, 0.95);
+  color: #0f3d42;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(118, 190, 197, 0.35);
+  box-shadow: 0 1px 2px rgba(15, 61, 66, 0.04);
+}
+
+.workspace-overview-root .ws-overview-title {
+  margin: 0.85rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+  font-size: clamp(1.65rem, 3.6vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  color: #0f172a;
+}
+
+.workspace-overview-root .ws-overview-title span:last-child {
+  background: linear-gradient(105deg, #21386b 0%, #2f7f88 55%, #76bec5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.workspace-overview-root .ws-overview-subtitle {
+  margin: 0.75rem 0 0;
+  max-width: 36rem;
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.workspace-overview-root .ws-overview-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.15rem;
+}
+
+.workspace-overview-root .ws-overview-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.workspace-overview-root .ws-overview-cta--primary {
+  background: #21386b;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(33, 56, 107, 0.18);
+}
+
+.workspace-overview-root .ws-overview-cta--primary:hover {
+  background: #1a2d56;
+  transform: translateY(-1px);
+}
+
+.workspace-overview-root .ws-overview-cta--ghost {
+  background: rgba(255, 255, 255, 0.75);
+  color: #21386b;
+  border: 1px solid rgba(33, 56, 107, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.workspace-overview-root .ws-overview-cta--ghost:hover {
+  background: #fff;
+  border-color: rgba(118, 190, 197, 0.55);
+}
+
+/* Legacy class aliases used elsewhere */
+.workspace-overview-root .card-title-24pt {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+}
+
+.workspace-overview-root .body-secondary-info-14pt {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}

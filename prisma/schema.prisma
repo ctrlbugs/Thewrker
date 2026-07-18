@@ -1,0 +1,227 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  TRAINEE
+  TALENT
+  RECRUITER
+  ADMIN
+}
+
+enum TrainingTrackType {
+  CUSTOMER_SUPPORT
+  VIRTUAL_ASSISTANT
+  SALES
+  WEB_DEVELOPMENT
+}
+
+enum JobStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  FILLED
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  SHORTLISTED
+  INTERVIEWED
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  password      String
+  firstName     String
+  lastName      String
+  role          UserRole      @default(TRAINEE)
+  profileImage  String?
+  phone         String?
+  timezone      String?
+  language      String?       @default("en")
+  bio           String?
+  isVerified    Boolean       @default(false)
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Profile relationships
+  profile       Profile?
+  trainingProgress TrainingProgress[]
+  certificates  Certificate[]
+  jobApplications Application[]
+  jobPostings   Job[]         @relation("JobPoster")
+  reviews       Review[]      @relation("ReviewedWorker")
+  receivedReviews Review[]    @relation("WorkerReviewed")
+
+  @@map("users")
+}
+
+model Profile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Skills and expertise
+  skillScores     Json?    // { "customer_support": 85, "communication": 90, ... }
+  workExperience  Json?    // Array of work experience objects
+  education       Json?    // Array of education objects
+  
+  // Availability
+  availability    Json?    // { "hours_per_week": 40, "timezone": "UTC+1", ... }
+  
+  // On-platform metrics
+  rating          Float    @default(0)
+  totalJobs       Int      @default(0)
+  completedJobs   Int      @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model TrainingTrack {
+  id              String            @id @default(cuid())
+  title           String
+  description     String
+  trackType       TrainingTrackType
+  duration        Int               // in hours
+  difficulty      String            // Beginner, Intermediate, Advanced
+  isActive        Boolean           @default(true)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  modules         TrainingModule[]
+  progress        TrainingProgress[]
+  certificates    Certificate[]
+
+  @@map("training_tracks")
+}
+
+model TrainingModule {
+  id              String         @id @default(cuid())
+  trackId         String
+  track           TrainingTrack  @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  title           String
+  description     String
+  content         String         // Video URL or content
+  order           Int
+  duration        Int            // in minutes
+  isRequired      Boolean        @default(true)
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("training_modules")
+}
+
+model TrainingProgress {
+  id              String        @id @default(cuid())
+  userId          String
+  trackId         String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track           TrainingTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  completedModules Json         // Array of completed module IDs
+  progressPercent  Float        @default(0)
+  status           String       @default("in_progress") // in_progress, completed, abandoned
+  score            Float?
+  
+  startedAt        DateTime     @default(now())
+  completedAt      DateTime?
+  updatedAt        DateTime     @updatedAt
+
+  @@unique([userId, trackId])
+  @@map("training_progress")
+}
+
+model Certificate {
+  id              String        @id @default(cuid())
+  userId          String
+  trackId         String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track           TrainingTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  
+  certificateId   String        @unique // Wrker-Verified certificate ID
+  issuedAt        DateTime      @default(now())
+  expiresAt       DateTime?
+  isVerified      Boolean       @default(true)
+  
+  @@map("certificates")
+}
+
+model Job {
+  id              String            @id @default(cuid())
+  recruiterId     String
+  recruiter       User              @relation("JobPoster", fields: [recruiterId], references: [id], onDelete: Cascade)
+  
+  title           String
+  description     String
+  requirements    Json              // Array of requirements
+  trackType       TrainingTrackType // Required training track
+  minSkillScore   Float?
+  
+  status          JobStatus         @default(DRAFT)
+  location        String?           // Remote, Hybrid, etc.
+  compensation    Json?             // { "min": 1000, "max": 2000, "currency": "USD", "type": "hourly" }
+  
+  trialDays       Int?              @default(7) // Trial period in days
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  closesAt        DateTime?
+
+  applications    Application[]
+
+  @@map("jobs")
+}
+
+model Application {
+  id              String            @id @default(cuid())
+  jobId           String
+  talentId        String
+  job             Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  talent          User              @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  
+  status          ApplicationStatus @default(PENDING)
+  coverLetter     String?
+  resumeUrl       String?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([jobId, talentId])
+  @@map("applications")
+}
+
+model Review {
+  id              String        @id @default(cuid())
+  workerId        String
+  reviewerId      String
+  worker          User          @relation("ReviewedWorker", fields: [workerId], references: [id], onDelete: Cascade)
+  reviewer        User          @relation("WorkerReviewed", fields: [reviewerId], references: [id], onDelete: Cascade)
+  
+  rating          Int           // 1-5
+  comment         String?
+  jobId           String?       // Optional: link to specific job
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("reviews")
+}
+

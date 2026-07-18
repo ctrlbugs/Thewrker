@@ -1,0 +1,220 @@
+/* Tool workspace controls — lean, soft, PDF-Studio aligned */
+.workspace-overview-root {
+  --pd-ink: #1e293b;
+  --pd-muted: #64748b;
+  --pd-line: #e8eef2;
+  --pd-soft: #f6f9fb;
+  --pd-action: #2f7f88;
+  --pd-action-hover: #276b72;
+  --pd-navy: #21386b;
+}
+
+.workspace-overview-root .body-emphasized-14pt {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--pd-ink);
+}
+
+.workspace-overview-root .body-regular-14,
+.workspace-overview-root .body-secondary-info-14pt {
+  font-size: 0.875rem;
+  color: var(--pd-muted);
+}
+
+.workspace-overview-root .pd-tab-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.15rem;
+}
+
+.workspace-overview-root .pd-tab {
+  border: 1px solid var(--pd-line);
+  background: #fff;
+  color: var(--pd-muted);
+  border-radius: 0;
+  padding: 0.55rem 0.95rem;
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.workspace-overview-root .pd-tab:hover {
+  color: var(--pd-ink);
+  border-color: rgba(118, 190, 197, 0.45);
+  background: rgba(118, 190, 197, 0.08);
+}
+
+.workspace-overview-root .pd-tab--active {
+  background: rgba(118, 190, 197, 0.18);
+  border-color: rgba(118, 190, 197, 0.45);
+  color: var(--pd-navy);
+}
+
+.workspace-overview-root .pd-file-input,
+.workspace-overview-root .pd-input,
+.workspace-overview-root .pd-textarea {
+  width: 100%;
+  border: 1px solid var(--pd-line);
+  border-radius: 0;
+  background: #fff;
+  padding: 0.8rem 0.95rem;
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: var(--pd-ink);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.workspace-overview-root .pd-file-input:focus,
+.workspace-overview-root .pd-input:focus,
+.workspace-overview-root .pd-textarea:focus {
+  border-color: rgba(118, 190, 197, 0.7);
+  box-shadow: 0 0 0 3px rgba(118, 190, 197, 0.16);
+}
+
+.workspace-overview-root .pd-textarea {
+  min-height: 180px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.workspace-overview-root .pd-btn-primary,
+.workspace-overview-root .pd-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0;
+  min-height: 44px;
+  padding: 0.7rem 1.1rem;
+  font-family: "Manrope", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.workspace-overview-root .pd-btn-primary {
+  background: var(--pd-action);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(47, 127, 136, 0.2);
+}
+
+.workspace-overview-root .pd-btn-primary:hover:not(:disabled) {
+  background: var(--pd-action-hover);
+}
+
+.workspace-overview-root .pd-btn-secondary {
+  background: #fff;
+  border-color: var(--pd-line);
+  color: var(--pd-ink);
+}
+
+.workspace-overview-root .pd-btn-secondary:hover:not(:disabled) {
+  background: var(--pd-soft);
+  border-color: rgba(118, 190, 197, 0.45);
+}
+
+.workspace-overview-root .pd-btn--disabled,
+.workspace-overview-root .pd-btn-primary:disabled,
+.workspace-overview-root .pd-btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.workspace-overview-root .pd-btn-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: pd-spin 0.8s linear infinite;
+}
+
+.workspace-overview-root .pd-btn-secondary .pd-btn-spinner {
+  border-color: rgba(33, 56, 107, 0.18);
+  border-top-color: var(--pd-navy);
+}
+
+@keyframes pd-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.workspace-overview-root .pd-operation {
+  border: 1px solid var(--pd-line);
+  border-radius: 0;
+  background: var(--pd-soft);
+  padding: 0.9rem 1rem;
+}
+
+.workspace-overview-root .pd-operation--error {
+  background: #fff5f5;
+  border-color: #ffd0d0;
+}
+
+.workspace-overview-root .pd-progress {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #e8eaed;
+  overflow: hidden;
+}
+
+.workspace-overview-root .pd-progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #76bec5, #21386b);
+  transition: width 0.2s ease;
+}
+
+.workspace-overview-root .bg-page-bg {
+  background: var(--pd-soft);
+  border-radius: 0;
+}
+
+.workspace-overview-root .pd-panel,
+.workspace-overview-root .pd-panel-header,
+.workspace-overview-root .pd-panel-body {
+  /* legacy ToolShell classes — no outer chrome; StudioPageShell owns layout */
+  border: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root,
+html[data-ds-theme="dark"] .workspace-overview-root {
+  --pd-ink: #f1f5f9;
+  --pd-muted: #94a3b8;
+  --pd-line: rgba(232, 238, 246, 0.12);
+  --pd-soft: #1e2630;
+  --pd-action: #76bec5;
+  --pd-action-hover: #68b0b7;
+  --pd-navy: #e8eef6;
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .pd-tab,
+.ds-shell[data-theme="dark"] .workspace-overview-root .pd-file-input,
+.ds-shell[data-theme="dark"] .workspace-overview-root .pd-input,
+.ds-shell[data-theme="dark"] .workspace-overview-root .pd-textarea,
+.ds-shell[data-theme="dark"] .workspace-overview-root .pd-btn-secondary,
+html[data-ds-theme="dark"] .workspace-overview-root .pd-tab,
+html[data-ds-theme="dark"] .workspace-overview-root .pd-file-input,
+html[data-ds-theme="dark"] .workspace-overview-root .pd-input,
+html[data-ds-theme="dark"] .workspace-overview-root .pd-textarea,
+html[data-ds-theme="dark"] .workspace-overview-root .pd-btn-secondary {
+  background: #171d25;
+  color: var(--pd-ink);
+}
+
+.ds-shell[data-theme="dark"] .workspace-overview-root .pd-tab--active,
+html[data-ds-theme="dark"] .workspace-overview-root .pd-tab--active {
+  background: rgba(118, 190, 197, 0.2);
+  color: #fff;
+}

@@ -1,0 +1,168 @@
+/* Shared lean studio / dev-tool shell — matches PDF Studio polish */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+.studio-shell {
+  --ss-ink: #1e293b;
+  --ss-muted: #64748b;
+  --ss-line: #e8eef2;
+  --ss-soft: #f6f9fb;
+  --ss-surface: #ffffff;
+  --ss-teal: #76bec5;
+  --ss-action: #2f7f88;
+  --ss-action-hover: #276b72;
+  --ss-navy: #21386b;
+  font-family: "Manrope", system-ui, sans-serif;
+  color: var(--ss-ink);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.studio-shell * {
+  box-sizing: border-box;
+}
+
+.studio-shell-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem 0.25rem 1.15rem;
+}
+
+@media (min-width: 900px) {
+  .studio-shell-hero {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 2.25rem;
+    padding: 2.25rem 0.35rem 1.5rem;
+    min-height: 260px;
+  }
+}
+
+.studio-shell-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.studio-shell-brand img,
+.studio-shell-brand-fallback {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.studio-shell-brand-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(118, 190, 197, 0.16);
+  color: var(--ss-action);
+}
+
+.studio-shell-brand span {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ss-ink);
+}
+
+.studio-shell-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.8vw, 2.45rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  color: var(--ss-ink);
+}
+
+.studio-shell-sub {
+  margin: 0.8rem 0 0;
+  max-width: 34rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ss-muted);
+}
+
+.studio-shell-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+
+.studio-shell-art-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(220px, 62vw);
+  aspect-ratio: 1;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(33, 56, 107, 0.1);
+  padding: 1.75rem;
+}
+
+.studio-shell-art-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 899px) {
+  .studio-shell-hero {
+    text-align: center;
+  }
+
+  .studio-shell-brand {
+    justify-content: center;
+  }
+
+  .studio-shell-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .studio-shell-art {
+    order: -1;
+  }
+
+  .studio-shell-art-frame {
+    width: min(150px, 44vw);
+  }
+}
+
+.studio-shell-panel {
+  border: 1px solid var(--ss-line);
+  border-radius: 0;
+  background: var(--ss-surface);
+  box-shadow: 0 1px 3px rgba(33, 56, 107, 0.05);
+  overflow: hidden;
+}
+
+.studio-shell-panel-body {
+  padding: 1.15rem 1.15rem 1.35rem;
+}
+
+@media (min-width: 640px) {
+  .studio-shell-panel-body {
+    padding: 1.35rem 1.4rem 1.55rem;
+  }
+}
+
+.ds-shell[data-theme="dark"] .studio-shell,
+html[data-ds-theme="dark"] .studio-shell {
+  --ss-ink: #f1f5f9;
+  --ss-muted: #94a3b8;
+  --ss-line: rgba(232, 238, 246, 0.12);
+  --ss-soft: #1e2630;
+  --ss-surface: #171d25;
+  --ss-navy: #e8eef6;
+  --ss-action: #76bec5;
+  --ss-action-hover: #68b0b7;
+}
+
+.ds-shell[data-theme="dark"] .studio-shell-art-frame,
+html[data-ds-theme="dark"] .studio-shell-art-frame {
+  background: #fff;
+}
