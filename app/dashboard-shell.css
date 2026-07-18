@@ -1,4 +1,4 @@
-/* Velonic-inspired shell — scoped to dashboard only (TheWrker brand tokens) */
+/* Velonic-inspired shell ? scoped to dashboard only (TheWrker brand tokens) */
 .ds-shell {
   --ds-bg: #eaf1f3;
   --ds-surface: #ffffff;
@@ -18,11 +18,15 @@
   --ds-radius: 14px;
   --ds-topbar-bg: rgba(255, 255, 255, 0.86);
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--ds-bg);
   color: var(--ds-ink);
+  overflow-x: hidden;
   transition:
     background-color 0.28s ease,
     color 0.28s ease;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 .ds-shell[data-theme="dark"],
@@ -42,7 +46,7 @@ html[data-ds-theme="dark"] .ds-shell {
   --ds-topbar-bg: rgba(23, 29, 37, 0.9);
 }
 
-/* Branded dashboard gate — profile cover gradient */
+/* Branded dashboard gate ? profile cover gradient */
 .ds-loader {
   position: relative;
   display: flex;
@@ -156,11 +160,21 @@ html[data-ds-theme="dark"] .ds-shell {
 }
 
 .ds-shell .ds-sidebar {
-  width: var(--ds-sidebar);
+  width: min(var(--ds-sidebar), 86vw);
+  max-width: 320px;
   background: var(--ds-surface);
   box-shadow: 0 0 24px rgba(33, 56, 107, 0.04);
   border-right: 1px solid var(--ds-border);
   transition: width 0.22s ease, background-color 0.28s ease, border-color 0.28s ease;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (min-width: 1024px) {
+  .ds-shell .ds-sidebar {
+    width: var(--ds-sidebar);
+    max-width: none;
+  }
 }
 
 .ds-shell .ds-sidebar.is-collapsed {
@@ -281,6 +295,7 @@ html[data-ds-theme="dark"] .ds-shell {
   top: 0;
   z-index: 20;
   height: var(--ds-topbar);
+  padding-top: env(safe-area-inset-top);
   background: var(--ds-topbar-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--ds-border);
@@ -288,11 +303,54 @@ html[data-ds-theme="dark"] .ds-shell {
   transition: background-color 0.28s ease, border-color 0.28s ease;
 }
 
+.ds-shell .ds-topbar-inner {
+  min-width: 0;
+  width: 100%;
+}
+
+.ds-shell .ds-topbar-title {
+  max-width: 7.5rem;
+}
+
+@media (min-width: 480px) {
+  .ds-shell .ds-topbar-title {
+    max-width: 11rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .ds-shell .ds-topbar-title {
+    max-width: 14rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .ds-shell {
+    --ds-topbar: 60px;
+  }
+
+  .ds-shell .ds-topbar-search .ds-search {
+    height: 38px;
+    padding: 0 0.7rem;
+  }
+
+  .ds-shell .ds-topbar-search .ds-search input {
+    font-size: 0.875rem;
+  }
+
+  .ds-shell .ds-search-panel {
+    left: auto;
+    right: 0;
+    width: min(100vw - 1.25rem, 360px);
+  }
+}
+
 .ds-shell .ds-search {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  width: min(420px, 100%);
+  width: 100%;
+  max-width: 420px;
   height: 42px;
   padding: 0 0.95rem;
   border-radius: 999px;
@@ -368,12 +426,14 @@ html[data-ds-theme="dark"] .ds-shell .ds-theme-btn .ds-theme-icon--moon {
 }
 
 .ds-shell .ds-content {
-  padding: 1.25rem 1rem 2rem;
+  padding: 1rem 0.85rem calc(2rem + env(safe-area-inset-bottom));
+  min-width: 0;
+  overflow-x: clip;
 }
 
 @media (min-width: 640px) {
   .ds-shell .ds-content {
-    padding: 1.5rem 1.5rem 2.5rem;
+    padding: 1.35rem 1.35rem 2.5rem;
   }
 }
 
@@ -479,4 +539,306 @@ html[data-ds-theme="dark"] .ds-shell *::-webkit-scrollbar-thumb {
     rgba(232, 238, 246, 0.18)
   );
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ?? Dashboard skeletons ?? */
+.ds-skel-bone {
+  position: relative;
+  overflow: hidden;
+  background: #e8edf3;
+  border-radius: 0.5rem;
+}
+
+.ds-skel-bone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  animation: ds-skel-shimmer 1.35s ease-in-out infinite;
+}
+
+@keyframes ds-skel-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.ds-skel {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ds-skel-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ds-skel-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.15rem;
+  border-radius: 0.75rem;
+  background: var(--ds-panel, #fff);
+  border: 1px solid var(--ds-border, rgba(33, 56, 107, 0.08));
+}
+
+.ds-skel-hero {
+  height: 11rem;
+  border-radius: 0.85rem;
+}
+
+.ds-skel-stat {
+  height: 7.25rem;
+  border-radius: 0.75rem;
+}
+
+.ds-skel-tile {
+  height: 8.5rem;
+  border-radius: 0.5rem;
+}
+
+.ds-skel-tile--short {
+  height: 5.5rem;
+}
+
+.ds-skel-card {
+  height: 10rem;
+}
+
+.ds-skel-panel {
+  height: 14rem;
+}
+
+.ds-skel-line {
+  height: 0.85rem;
+}
+
+.ds-skel-line--lg {
+  width: 42%;
+  height: 1.35rem;
+}
+
+.ds-skel-line--md {
+  width: 28%;
+}
+
+.ds-skel-line--sm {
+  width: 48%;
+  height: 0.7rem;
+  opacity: 0.75;
+}
+
+.ds-skel-line--xs {
+  width: 3.5rem;
+  height: 0.55rem;
+}
+
+.ds-skel-line--title {
+  width: 5.5rem;
+  height: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.ds-skel-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ds-skel-grid--2 {
+  grid-template-columns: 1fr;
+}
+
+.ds-skel-grid--3 {
+  grid-template-columns: 1fr;
+}
+
+.ds-skel-grid--4 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .ds-skel-grid--2,
+  .ds-skel-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .ds-skel-grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ds-skel-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ds-skel-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ds-skel-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ds-bg, #eaf1f3);
+  overflow-x: hidden;
+}
+
+.ds-skel-sidebar {
+  display: none;
+  pointer-events: none;
+}
+
+.ds-skel-main {
+  margin-left: 0 !important;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .ds-skel-sidebar {
+    display: flex;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 30;
+    flex-direction: column;
+  }
+
+  .ds-skel-main {
+    margin-left: var(--ds-sidebar) !important;
+  }
+
+  .ds-skel-menu,
+  .ds-skel-title-stack {
+    display: none;
+  }
+}
+
+.ds-skel-brand {
+  padding: 1.1rem 1rem 0.75rem;
+}
+
+.ds-skel-logo {
+  height: 2.25rem;
+  width: 8.5rem;
+}
+
+.ds-skel-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem 1.5rem;
+}
+
+.ds-skel-nav-item {
+  height: 2.15rem;
+  border-radius: 0.55rem;
+}
+
+.ds-skel-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: var(--ds-topbar, 60px);
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--ds-border, rgba(33, 56, 107, 0.08));
+  background: var(--ds-topbar-bg, rgba(255, 255, 255, 0.85));
+}
+
+@media (min-width: 640px) {
+  .ds-skel-topbar {
+    gap: 0.85rem;
+    padding: 0 1.25rem;
+  }
+}
+
+.ds-skel-title-stack {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.ds-skel-search {
+  height: 2.35rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+  border-radius: 999px;
+}
+
+@media (min-width: 1024px) {
+  .ds-skel-search {
+    max-width: 280px;
+    margin-left: auto;
+  }
+}
+
+.ds-skel-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.ds-skel-icon {
+  height: 2.15rem;
+  width: 2.15rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.ds-skel-avatar {
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 639px) {
+  .ds-skel-hero {
+    height: 9.5rem;
+  }
+
+  .ds-skel-stat {
+    height: 6.25rem;
+  }
+
+  .ds-skel-tile {
+    height: 7.25rem;
+  }
+
+  .ds-skel-top-actions .ds-skel-icon:first-child {
+    display: none;
+  }
+}
+
+.ds-shell[data-theme="dark"] .ds-skel-bone,
+html[data-ds-theme="dark"] .ds-skel-bone {
+  background: rgba(232, 238, 246, 0.08);
+}
+
+.ds-shell[data-theme="dark"] .ds-skel-bone::after,
+html[data-ds-theme="dark"] .ds-skel-bone::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+}
+
+.ds-shell[data-theme="dark"] .ds-skel-block,
+html[data-ds-theme="dark"] .ds-skel-block {
+  background: var(--ds-panel, #171d25);
 }

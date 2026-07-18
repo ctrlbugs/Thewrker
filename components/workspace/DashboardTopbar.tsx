@@ -145,28 +145,28 @@ export default function DashboardTopbar({
     <header className="ds-topbar">
       <div
         ref={rootRef}
-        className="flex h-full items-center gap-3 px-4 sm:px-6 lg:px-8"
+        className="ds-topbar-inner flex h-full items-center gap-2 px-3 sm:gap-3 sm:px-6 lg:px-8"
       >
         <button
           type="button"
           onClick={onMenuClick}
-          className="ds-icon-btn"
-          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          className="ds-icon-btn shrink-0"
+          aria-label="Open menu"
+          title="Open menu"
         >
           <Menu className="h-5 w-5" />
         </button>
 
-        <div className="hidden min-w-0 sm:block">
-          <p className="truncate text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--ds-muted)]">
+        <div className="ds-topbar-title min-w-0 shrink">
+          <p className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--ds-muted)] sm:text-[11px]">
             Workspace
           </p>
-          <h1 className="truncate text-base font-semibold text-[var(--ds-ink)]">
+          <h1 className="truncate text-sm font-semibold text-[var(--ds-ink)] sm:text-base">
             {pageTitle(pathname)}
           </h1>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[420px]">
+        <div className="ds-topbar-search relative min-w-0 flex-1">
           <label className="ds-search">
             <Search className="h-4 w-4 shrink-0 text-[#8a97ab]" />
             <input
@@ -176,7 +176,7 @@ export default function DashboardTopbar({
                 setSearchOpen(true);
               }}
               onFocus={() => setSearchOpen(true)}
-              placeholder="Search @username, people, studios…"
+              placeholder="Search…"
               aria-label="Search workspace and people"
             />
           </label>
@@ -216,7 +216,7 @@ export default function DashboardTopbar({
           )}
         </div>
 
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-1.5">
           {ui ? (
             <button
               type="button"

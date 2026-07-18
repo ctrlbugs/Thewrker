@@ -123,7 +123,7 @@ export default function OrganisationLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand-primary px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-brand-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex h-[3.15rem] w-full items-center justify-center rounded-xl bg-[#1a2d56] px-4 text-sm font-semibold text-white shadow-[0_8px_22px_rgba(33,56,107,0.22)] transition-all duration-200 ease-out hover:bg-[#152447] hover:shadow-[0_10px_26px_rgba(33,56,107,0.28)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading ? "Signing in…" : "Sign In With Email"}
           </button>
@@ -157,8 +157,14 @@ export default function OrganisationLoginPage() {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Wrong workspace?{" "}
-          <Link href="/workspace" className="font-semibold text-brand-primary hover:underline">
+          <Link href="/workspace" className="font-semibold text-[#21386B] hover:underline">
             Find another organisation
+          </Link>
+        </p>
+        <p className="mt-3 text-center text-sm text-gray-500">
+          Signing in as an individual?{" "}
+          <Link href="/login/email" className="font-semibold text-[#21386B] hover:underline">
+            Sign in with email
           </Link>
         </p>
       </div>

@@ -102,8 +102,9 @@ export default function EmailLoginPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full rounded-xl border border-gray-200 py-3.5 pl-12 pr-4 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-12 pr-4 outline-none transition focus:border-[#21386B] focus:ring-2 focus:ring-[#21386B]/15"
                   placeholder="you@example.com"
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -121,8 +122,9 @@ export default function EmailLoginPage() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full rounded-xl border border-gray-200 py-3.5 pl-12 pr-12 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-12 pr-12 outline-none transition focus:border-[#21386B] focus:ring-2 focus:ring-[#21386B]/15"
                   placeholder="Enter your password"
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
@@ -139,7 +141,7 @@ export default function EmailLoginPage() {
               type="submit"
               disabled={loading}
               aria-busy={loading}
-              className="flex h-[3.15rem] w-full items-center justify-center rounded-xl bg-[#76bec5] px-4 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(118,190,197,0.28)] transition-all duration-200 ease-out hover:bg-[#68b0b7] hover:shadow-[0_10px_24px_rgba(118,190,197,0.34)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
+              className="flex h-[3.15rem] w-full items-center justify-center rounded-xl bg-[#1a2d56] px-4 text-sm font-semibold text-white shadow-[0_8px_22px_rgba(33,56,107,0.22)] transition-all duration-200 ease-out hover:bg-[#152447] hover:shadow-[0_10px_26px_rgba(33,56,107,0.28)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? (
                 <Loader2 className="h-5 w-5 animate-spin text-white" aria-hidden />

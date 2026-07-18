@@ -33,6 +33,10 @@ import {
 import BrandLogo from "@/components/brand-logo";
 import DashboardLoader from "@/components/workspace/DashboardLoader";
 import {
+  DashboardShellSkeleton,
+  useCompactViewport,
+} from "@/components/workspace/DashboardSkeleton";
+import {
   DashboardUiProvider,
   useDashboardUi,
 } from "@/components/workspace/dashboard-ui-context";
@@ -107,6 +111,15 @@ export default function DashboardLayout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [fromLoginGate] = useState(() => {
+    try {
+      if (typeof window === "undefined") return false;
+      return sessionStorage.getItem("thewrker.dashGate") === "1";
+    } catch {
+      return false;
+    }
+  });
+  const compactViewport = useCompactViewport();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -140,6 +153,11 @@ export default function DashboardLayout({
     }
     setSidebarOpen(true);
   };
+
+  useEffect(() => {
+    // Close mobile drawer when navigating between pages
+    setSidebarOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!pathname) return;
@@ -182,15 +200,15 @@ export default function DashboardLayout({
 
   useEffect(() => {
     const startedAt = Date.now();
-    let fromLoginGate = false;
     try {
-      fromLoginGate = sessionStorage.getItem("thewrker.dashGate") === "1";
-      if (fromLoginGate) sessionStorage.removeItem("thewrker.dashGate");
+      if (sessionStorage.getItem("thewrker.dashGate") === "1") {
+        sessionStorage.removeItem("thewrker.dashGate");
+      }
     } catch {
       /* ignore */
     }
-    // Keep the branded gate visible long enough to read — longer after sign-in
-    const minMs = fromLoginGate ? 1400 : 900;
+    // Branded gate only after sign-in; otherwise shell skeleton is enough
+    const minMs = fromLoginGate ? 1100 : 0;
 
     const fetchUser = async () => {
       try {
@@ -238,7 +256,7 @@ export default function DashboardLayout({
     };
 
     fetchUser();
-  }, [router]);
+  }, [router, fromLoginGate]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -247,7 +265,21 @@ export default function DashboardLayout({
   };
 
   if (loading) {
-    return <DashboardLoader title="Workspace" subtitle="Loading your dashboard" />;
+    // After sign-in: short branded gate
+    if (fromLoginGate) {
+      return <DashboardLoader title="Workspace" subtitle="Loading your dashboard" />;
+    }
+    // Skeleton only on phones / iPads — skip on laptop & desktop
+    if (compactViewport) {
+      return <DashboardShellSkeleton />;
+    }
+    return (
+      <div
+        className="min-h-screen bg-[#eaf1f3]"
+        aria-busy="true"
+        aria-label="Loading workspace"
+      />
+    );
   }
 
   if (!user) return null;
@@ -328,10 +360,10 @@ function DashboardShell({
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 flex transform flex-col transition-[width,transform] duration-200 ease-in-out lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-30 flex max-w-[320px] transform flex-col transition-[width,transform] duration-200 ease-in-out lg:translate-x-0",
           workspaceMode
             ? cn("ds-sidebar", sidebarCollapsed && "is-collapsed")
-            : "w-64 border-r border-gray-200 bg-white",
+            : "w-[min(16rem,86vw)] border-r border-gray-200 bg-white",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

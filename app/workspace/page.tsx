@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BrandLogo from "@/components/brand-logo";
+import { Loader2 } from "lucide-react";
 
 function slugifyOrg(value: string) {
   const trimmed = value.trim().toLowerCase();
@@ -30,7 +31,8 @@ export default function WorkspaceFindPage() {
     e.preventDefault();
     setError("");
 
-    const slug = slugifyOrg(input);
+    const query = input.trim();
+    const slug = slugifyOrg(query);
     if (!slug) {
       setError("Enter your organisation workspace name or email.");
       return;
@@ -43,22 +45,32 @@ export default function WorkspaceFindPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          query: input.trim(),
+          query,
           slug,
         }),
       });
 
       const data = await response.json();
+      const resolvedSlug = data.slug || slug;
 
-      if (data.slug || response.ok) {
-        router.push(`/workspace/${data.slug || slug}`);
+      // Organisation email → OTP page (backend delivery later)
+      if (query.includes("@")) {
+        const params = new URLSearchParams({
+          email: query,
+          slug: resolvedSlug,
+        });
+        router.push(`/workspace/otp?${params.toString()}`);
         return;
       }
 
-      // Frontend-first: still route to the workspace URL for UX
-      router.push(`/workspace/${slug}`);
+      router.push(`/workspace/${resolvedSlug}`);
     } catch {
-      router.push(`/workspace/${slug}`);
+      if (query.includes("@")) {
+        const params = new URLSearchParams({ email: query, slug });
+        router.push(`/workspace/otp?${params.toString()}`);
+      } else {
+        router.push(`/workspace/${slug}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -103,8 +115,8 @@ export default function WorkspaceFindPage() {
                 setInput(e.target.value);
                 setError("");
               }}
-              placeholder="tradepat or name@company.com"
-              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15"
+              placeholder="google or name@company.com"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-[#21386B] focus:ring-2 focus:ring-[#21386B]/15"
             />
             <p className="mt-2 text-xs text-gray-400">
               Your team URL will look like{" "}
@@ -115,9 +127,14 @@ export default function WorkspaceFindPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-brand-primary px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-brand-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+            aria-busy={loading}
+            className="flex h-[3.15rem] w-full items-center justify-center rounded-xl bg-[#1a2d56] px-4 text-sm font-semibold text-white shadow-[0_8px_22px_rgba(33,56,107,0.22)] transition-all duration-200 ease-out hover:bg-[#152447] hover:shadow-[0_10px_26px_rgba(33,56,107,0.28)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? "Finding workspace…" : "Continue"}
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-white" aria-hidden />
+            ) : (
+              "Continue"
+            )}
           </button>
         </form>
 
@@ -131,7 +148,7 @@ export default function WorkspaceFindPage() {
 
         <Link
           href="/login"
-          className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 px-4 py-3.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+          className="flex h-[3.15rem] w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-[#f7f8fa] px-4 text-sm font-semibold text-[#2f3d52] transition-all duration-200 hover:border-[#21386B]/25 hover:bg-[#eef1f6]"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden>
             <path
@@ -156,7 +173,10 @@ export default function WorkspaceFindPage() {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Don&apos;t know your workspace?{" "}
-          <Link href="/login" className="font-semibold text-brand-primary hover:underline">
+          <Link
+            href="/login/email"
+            className="font-semibold text-[#21386B] hover:underline"
+          >
             Sign in as an individual
           </Link>
         </p>

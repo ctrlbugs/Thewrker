@@ -548,10 +548,10 @@ html[data-ds-theme="dark"] .workspace-overview-root .ws-soft-icon--rose {
   display: flex;
   flex-direction: column;
   gap: 0.05em;
-  font-size: clamp(1.65rem, 3.6vw, 2.35rem);
+  font-size: clamp(1.4rem, 5.5vw, 2.35rem);
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.12;
+  line-height: 1.15;
   color: #0f172a;
 }
 
@@ -576,6 +576,27 @@ html[data-ds-theme="dark"] .workspace-overview-root .ws-soft-icon--rose {
   flex-wrap: wrap;
   gap: 0.65rem;
   margin-top: 1.15rem;
+}
+
+@media (max-width: 639px) {
+  .workspace-overview-root .ws-overview-hero {
+    border-radius: 1.1rem;
+    padding: 1.15rem 1.1rem 1.25rem;
+  }
+
+  .workspace-overview-root .ws-overview-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .workspace-overview-root .ws-overview-cta {
+    width: 100%;
+  }
+
+  .workspace-overview-root .ws-overview-hero-orb--a,
+  .workspace-overview-root .ws-overview-hero-orb--b {
+    opacity: 0.55;
+  }
 }
 
 .workspace-overview-root .ws-overview-cta {

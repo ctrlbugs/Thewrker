@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 function toSlug(value: string) {
   const trimmed = value.trim().toLowerCase();
-  // Prefer email domain for workspace hints: name@tradepat.com → tradepat
+  // Prefer email domain for workspace hints: name@company.com → company
   if (trimmed.includes("@")) {
     const domain = trimmed.split("@")[1] || "";
     const root = domain.split(".")[0] || "";
